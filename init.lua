@@ -27,6 +27,16 @@ dofile(minetest.get_modpath("death_messages").."/settings.txt")
 -- A table of quips for death messages.  The first item in each sub table is the
 -- default message used when RANDOM_MESSAGES is disabled.
 local messages = {}
+local msgcolor = {
+	-- lava : red
+	lava = "#ff3300",
+	-- water : blue
+	water =  "#00ccff",
+	-- fire : yellow
+	fire = "#ffff00",
+	-- other : green
+	other =	"#32a852",
+}
 
 -- Lava death messages
 messages.lava = {
@@ -35,8 +45,8 @@ messages.lava = {
 	" melted into a ball of fire.",
 	" couldn't resist that warm glow of lava.",
 	" dug straight down.",
-	" didn't know lava was hot."
-	" dived into a pool of lava and hit their head."
+	" didn't know lava was hot.",
+	" dived into a pool of lava and hit their head.",
 	"'s goose was cooked."
 }
 
@@ -47,13 +57,13 @@ messages.water = {
 	" failed at swimming lessons.",
 	" tried to impersonate an anchor.",
 	" forgot he wasn't a fish.",
-	" blew one too many bubbles."
-	" is sleeping with the fishes."
-	" regrets skipping the swimming lessons."
-	" tried to swim in cement shoes."
-	" took \"our ancestors were fish\" the wrong way."
-	" forgot to wear a life jacket."
-	" went to Davy Jones's locker."
+	" blew one too many bubbles.",
+	" is sleeping with the fishes.",
+	" regrets skipping the swimming lessons.",
+	" tried to swim in cement shoes.",
+	" took \"our ancestors were fish\" the wrong way.",
+	" forgot to wear a life jacket.",
+	" went to Davy Jones's locker.",
 }
 
 -- Burning death messages
@@ -62,15 +72,15 @@ messages.fire = {
 	" got a little too warm.",
 	" got too close to the camp fire.",
 	" just got roasted, hotdog style.",
-	" gout burned up. More light that way."
-	" spontaneously combusted."
-	"'s goose was cooked."
-	" found out they were highly flammable."
-	" may need some ice for that burn."
-	" tried to make love to a campfire."
-	" walked on hot coals."
-	" was fired."
-	"'s fire eating performance took a turn for the worse."
+	" gout burned up. More light that way.",
+	" spontaneously combusted.",
+	"'s goose was cooked.",
+	" found out they were highly flammable.",
+	" may need some ice for that burn.",
+	" tried to make love to a campfire.",
+	" walked on hot coals.",
+	" was fired.",
+	"'s fire eating performance took a turn for the worse.",
 }
 
 -- Other death messages
@@ -79,16 +89,16 @@ messages.other = {
 	" did something fatal.",
 	" gave up on life.",
 	" is somewhat dead now.",
-	" passed out -permanently."
-	" got to test the theory of the eternal soul."
-	" wanted to see if reincarnation was true."
-	" is now a candidate for the Darwin Awards."
-	" removed themselves from the gene pool."
-	" bit the dust."
-	" came to a sticky end."
-	" is now dead as a dodo."
-	" kicked the bucket."
-	" was too good for this world."
+	" passed out -permanently.",
+	" got to test the theory of the eternal soul.",
+	" wanted to see if reincarnation was true.",
+	" is now a candidate for the Darwin Awards.",
+	" removed themselves from the gene pool.",
+	" bit the dust.",
+	" came to a sticky end.",
+	" is now dead as a dodo.",
+	" kicked the bucket.",
+	" was too good for this world.",
 	" cashed in their chips."
 }
 
@@ -110,16 +120,16 @@ minetest.register_on_dieplayer(function(player)
     end
     -- Death by lava
     if node.groups.lava ~= nil then
-        minetest.chat_send_all(player_name .. get_message("lava"))
+        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["lava"],get_message("lava")))
     -- Death by drowning
     elseif player:get_breath() == 0 then
-        minetest.chat_send_all(player_name .. get_message("water"))
+        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["water"],get_message("water")))
     -- Death by fire
-    elseif node.name == "fire:basic_flame" then
-        minetest.chat_send_all(player_name .. get_message("fire"))
+    elseif node.name == "fire:basic_flame" or node.name == "fire:permanent_flame" or node.name == "fake_fire:fancy_fire" then
+        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["fire"],get_message("fire")))
     -- Death by something else
     else
-        minetest.chat_send_all(player_name .. get_message("other"))
+        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["other"],get_message("other")))
     end
 
 end)
