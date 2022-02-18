@@ -9,7 +9,6 @@ read_globals = {
 	"Settings",
 	"unpack",
 	"RANDOM_MESSAGES",
-	"get_message",
 
 	table = {
 		fields = {

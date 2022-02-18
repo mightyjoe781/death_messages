@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --------------------------------------------------------------------------------
 local title = "Death Messages"
-local version = "0.1.4"
+local version = "0.1.5"
 local mname = "death_messages"
 --------------------------------------------------------------------------------
 dofile(minetest.get_modpath("death_messages").."/settings.txt")
@@ -27,6 +27,7 @@ dofile(minetest.get_modpath("death_messages").."/settings.txt")
 -- A table of quips for death messages.  The first item in each sub table is the
 -- default message used when RANDOM_MESSAGES is disabled.
 local messages = {}
+
 local msgcolor = {
 	-- lava : red
 	lava = "#ff3300",
@@ -102,7 +103,7 @@ messages.other = {
 	" cashed in their chips."
 }
 
-function get_message(mtype)
+function messages.get_message(mtype)
     if RANDOM_MESSAGES then
         return messages[mtype][math.random(1, #messages[mtype])]
     else
@@ -120,16 +121,22 @@ minetest.register_on_dieplayer(function(player)
     end
     -- Death by lava
     if node.groups.lava ~= nil then
-        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["lava"],get_message("lava")))
+        minetest.chat_send_all(player_name .. minetest.colorize(
+            msgcolor["lava"],messages.get_message("lava")))
     -- Death by drowning
     elseif player:get_breath() == 0 then
-        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["water"],get_message("water")))
+        minetest.chat_send_all(player_name .. minetest.colorize(
+            msgcolor["water"],messages.get_message("water")))
     -- Death by fire
-    elseif node.name == "fire:basic_flame" or node.name == "fire:permanent_flame" or node.name == "fake_fire:fancy_fire" then
-        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["fire"],get_message("fire")))
+    elseif node.name == "fire:basic_flame"
+        or node.name == "fire:permanent_flame"
+        or node.name == "fake_fire:fancy_fire" then
+        minetest.chat_send_all(player_name .. minetest.colorize(
+            msgcolor["fire"],messages.get_message("fire")))
     -- Death by something else
     else
-        minetest.chat_send_all(player_name .. minetest.colorize(msgcolor["other"],get_message("other")))
+        minetest.chat_send_all(player_name .. minetest.colorize(
+            msgcolor["other"],messages.get_message("other")))
     end
 
 end)
