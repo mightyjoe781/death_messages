@@ -8,6 +8,8 @@ read_globals = {
 	"ItemStack",
 	"Settings",
 	"unpack",
+	"RANDOM_MESSAGES",
+	"get_message",
 
 	table = {
 		fields = {
@@ -33,4 +35,3 @@ read_globals = {
 		}
 	},
 }
-max_line_length = 80
